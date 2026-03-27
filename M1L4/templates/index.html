@@ -1,0 +1,10 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Добро пожаловать в мир покемонов!</h1>
+<div class="actions">
+    <a href="{{ url_for('go') }}" class="btn">Создать покемона</a>
+    <a href="{{ url_for('my_pokemons') }}" class="btn">Все покемоны</a>
+</div>
+{% endblock %}

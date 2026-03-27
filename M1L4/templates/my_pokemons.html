@@ -1,0 +1,39 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Все тренеры и их покемоны</h1>
+
+<table class="pokemons-table">
+    <thead>
+        <tr>
+            <th>Тренер</th>
+            <th>Покемон</th>
+            <th>Здоровье</th>
+            <th>Сила атаки</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for trainer, p_name, hp, power in pokemons %}
+        <tr>
+            <td>{{ trainer }}</td>
+            <td>{{ p_name }}</td>
+            <td>{{ hp }}</td>
+            <td>{{ power }}</td>
+            <td>
+                {% if session.get('trainer_name') != trainer %}
+                    <a href="{{ url_for('battle', opponent=trainer) }}" class="battle-btn-small">
+                        Атаковать
+            </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="actions">
+    <a href="{{ url_for('index') }}" class="btn">На главную</a>
+</div>
+{% endblock %}

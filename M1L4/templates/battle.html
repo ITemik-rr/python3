@@ -1,0 +1,39 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Сражение!</h1>
+
+<div class="battle-container">
+    <div class="pokemon-card">
+        <h2>Твой покемон</h2>
+        <img src="{{ my_pokemon.img }}" alt="{{ my_pokemon.name }}" class="pokemon-img">
+        <p><strong>{{ my_pokemon.pokemon_trainer }}</strong></p>
+        <p>{{ my_pokemon.name }}</p>
+        <p>Здоровье: {{ my_pokemon.hp }}</p>
+        <p>Сила атаки: {{ my_pokemon.power }}</p>
+    </div>
+
+    <div class="vs">VS</div>
+
+    <div class="pokemon-card">
+        <h2>Противник</h2>
+        <img src="{{ enemy_pokemon.img }}" alt="{{ enemy_pokemon.name }}" class="pokemon-img">
+        <p><strong>{{ enemy_pokemon.pokemon_trainer }}</strong></p>
+        <p>{{ enemy_pokemon.name }}</p>
+        <p>Здоровье: {{ enemy_pokemon.hp }}</p>
+        <p>Сила атаки: {{ enemy_pokemon.power }}</p>
+    </div>
+</div>
+
+<div class="result">
+    <h3>Результат сражения:</h3>
+    <pre>{{ result }}</pre>
+</div>
+
+<div class="actions">
+    <a href="{{ url_for('my_pokemons') }}" class="btn">Все покемоны</a>
+    <a href="{{ url_for('go') }}" class="btn">Создать нового покемона</a>
+    <a href="{{ url_for('index') }}" class="btn">На главную</a>
+</div>
+{% endblock %}
