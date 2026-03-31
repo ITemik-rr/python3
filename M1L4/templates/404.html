@@ -1,0 +1,13 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="error-page">
+    <h1>404 — Страница не найдена</h1>
+    <p>Извините, запрошенная страница не существует.</p>
+    <div class="actions">
+        <a href="{{ url_for('index') }}" class="btn">На главную</a>
+        <a href="{{ url_for('my_pokemons') }}" class="btn">Все покемоны</a>
+    </div>
+</div>
+{% endblock %}
