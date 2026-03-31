@@ -2,9 +2,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Добро пожаловать в мир покемонов!</h1>
-<div class="actions">
-    <a href="{{ url_for('go') }}" class="btn">Создать покемона</a>
-    <a href="{{ url_for('my_pokemons') }}" class="btn">Все покемоны</a>
+<div class="hero">
+    <h1>Добро пожаловать в мир покемонов!</h1>
+    <p>Создайте своего покемона и начните приключения!</p>
+
+    <div class="hero-actions">
+        <a href="{{ url_for('go') }}" class="btn btn-large">Создать покемона</a>
+        <a href="{{ url_for('my_pokemons') }}" class="btn btn-secondary">Посмотреть всех покемонов</a>
+    </div>
+
+    <div class="pokemon-grid">
+        {% for name, pokemon in pokemons.items() %}
+        <div class="pokemon-preview">
+            <img src="{{ pokemon.img }}" alt="{{ pokemon.name }}" class="pokemon-thumb">
+            <p><strong>{{ pokemon.name }}</strong></p>
+            <p>Тренер: {{ name }}</p>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
