@@ -9,9 +9,19 @@
     <nav>
         <a href="{{ url_for('index') }}">Главная</a>
         <a href="{{ url_for('go') }}">Создать покемона</a>
+        <a href="{{ url_for('info') }}">Информация о покемоне</a>
         <a href="{{ url_for('my_pokemons') }}">Все покемоны</a>
     </nav>
     <main>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
         {% block content %}{% endblock %}
     </main>
 </body>
