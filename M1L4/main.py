@@ -1,10 +1,18 @@
+
 from flask import Flask, render_template, session, redirect, url_for, flash
 from pokemon_logic import Pokemon, Wizard, Fighter
 import random
 import secrets
+import logging
+
+from flask import abort
+
+
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
+
+logging.basicConfig(level=logging.INFO)
 
 @app.route('/')
 def index():
@@ -29,7 +37,6 @@ def go():
         Pokemon.pokemons[trainer_name] = pokemon
         flash(f"Поздравляем! Вы создали покемона {pokemon.name}!")
 
-    # Всегда передаём pokemons в шаблон
     pokemon = Pokemon.pokemons[trainer_name]
     return render_template(
         'pokemon.html',
@@ -37,8 +44,24 @@ def go():
         img_url=pokemon.img,
         info=pokemon.info(),
         trainer_name=trainer_name,
-        pokemons=Pokemon.pokemons  # Передаём словарь покемонов
+        pokemons=Pokemon.pokemons
     )
+
+@app.route('/info')
+def info():
+    """Маршрут для отображения информации о покемоне пользователя"""
+    trainer_name = session.get('trainer_name')
+
+    if trainer_name and trainer_name in Pokemon.pokemons:
+        pokemon = Pokemon.pokemons[trainer_name]
+        return render_template(
+            'info.html',
+            pokemon=pokemon,
+            trainer_name=trainer_name
+        )
+    else:
+        flash("У вас ещё нет покемона! Создайте его командой /go")
+        return redirect(url_for('go'))
 
 @app.route('/battle/<opponent>')
 def battle(opponent):
@@ -60,54 +83,73 @@ def battle(opponent):
     Pokemon.pokemons[trainer_name] = my_pokemon
     Pokemon.pokemons[opponent] = enemy_pokemon
 
+    if enemy_pokemon.hp <= 0:
+        flash(f"Победа! {enemy_pokemon.pokemon_trainer} побеждён!")
+        return redirect(url_for('my_pokemons'))
+
     return render_template(
         'battle.html',
         my_pokemon=my_pokemon,
         enemy_pokemon=enemy_pokemon,
         result=result,
         opponent=opponent,
-        pokemons=Pokemon.pokemons  # Передаём словарь покемонов
+        pokemons=Pokemon.pokemons
     )
+
+@app.route('/feed')
+def feed():
+    trainer_name = session.get('trainer_name')
+
+    if not trainer_name or trainer_name not in Pokemon.pokemons:
+        flash("Сначала создайте покемона командой /go")
+        return redirect(url_for('go'))
+
+
+    pokemon = Pokemon.pokemons[trainer_name]
+    result = pokemon.feed()
+    flash(result)
+    return redirect(url_for('info'))
 
 @app.route('/my_pokemons')
 def my_pokemons():
-    all_pokemons = [(name, pokemon.name, pokemon.hp, pokemon.power)
-                   for name, pokemon in Pokemon.pokemons.items()]
-    return render_template('my_pokemons.html', pokemons=all_pokemons, all_pokemons_dict=Pokemon.pokemons)
+    trainer_name = session.get('trainer_name')
+
+    if not Pokemon.pokemons:
+        flash("Пока нет ни одного покемона!")
+        return render_template('my_pokemons.html', pokemons=[], all_pokemons_dict=Pokemon.pokemons, trainer_name=trainer_name)
+
+
+    pokemons_list = []
+    for name, pokemon in Pokemon.pokemons.items():
+        pokemons_list.append((
+            name,
+            pokemon.name,
+            pokemon.hp,
+            pokemon.power
+        ))
+
+    return render_template(
+        'my_pokemons.html',
+        pokemons=pokemons_list,
+        all_pokemons_dict=Pokemon.pokemons,
+        trainer_name=trainer_name
+    )
 
 @app.route('/restore')
 def restore():
     trainer_name = session.get('trainer_name')
-    if trainer_name and trainer_name in Pokemon.pokemons:
-        pokemon = Pokemon.pokemons[trainer_name]
-        pokemon.hp = random.randint(50, 150)
-        pokemon.power = random.randint(10, 30)
-        flash(f"Покемон {pokemon.name} восстановил силы! Здоровье: {pokemon.hp}, Сила: {pokemon.power}")
-        return redirect(url_for('pokemon'))
-    else:
-        flash("Сначала создайте покемона!")
+
+    if not trainer_name or trainer_name not in Pokemon.pokemons:
+        flash("Сначала создайте покемона командой /go")
         return redirect(url_for('go'))
 
-@app.route('/pokemon')
-def pokemon():
-    trainer_name = session.get('trainer_name')
-    if trainer_name and trainer_name in Pokemon.pokemons:
-        pokemon = Pokemon.pokemons[trainer_name]
-        return render_template(
-            'pokemon.html',
-            name=pokemon.name,
-            img_url=pokemon.img,
-            info=pokemon.info(),
-            trainer_name=trainer_name,
-            pokemons=Pokemon.pokemons
-        )
-    else:
-        flash("У вас нет покемона! Создайте его командой /go")
-        return redirect(url_for('go'))
-
+    pokemon = Pokemon.pokemons[trainer_name]
+    # Восстанавливаем здоровье до случайного значения в диапазоне
+    pokemon.hp = random.randint(100, 150)
+    flash(f"Здоровье покемона восстановлено до {pokemon.hp} HP!")
+    return redirect(url_for('info'))
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
-
 if __name__ == '__main__':
     app.run(debug=True)
