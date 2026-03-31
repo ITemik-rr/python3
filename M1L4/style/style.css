@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -7,8 +6,8 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba1 100%);
-    min-height: 100vh;
+    background-color: #f0f8ff;
+    color: #333;
 }
 
 nav {
@@ -24,39 +23,26 @@ nav a {
     font-weight: bold;
 }
 
-main {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 20px;
+.flash-messages {
+    margin: 20px 0;
 }
 
-h1 {
+.flash {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.pokemon-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     text-align: center;
-    color: white;
-    margin-bottom: 2rem;
-}
-
-.actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin: 2rem 0;
-}
-
-.btn {
-    display: inline-block;
-    padding: 12px 24px;
-    background: #4ecdc4;
-    color: white;
-    text-decoration: none;
-    border-radius: 25px;
-    font-weight: bold;
-    transition: all 0.3s;
-}
-
-.btn:hover {
-    background: #4cb0a8;
-    transform: translateY(-2px);
+    max-width: 400px;
+    margin: 20px auto;
 }
 
 .pokemon-img {
@@ -65,145 +51,181 @@ h1 {
     object-fit: contain;
 }
 
-.info {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    margin: 1.5rem 0;
-    white-space: pre-line;
+.stats {
+    margin: 20px 0;
+}
+
+.stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.stat-label {
+    font-weight: bold;
+    color: #555;
+}
+
+.actions {
     text-align: center;
+    margin: 30px 0;
 }
 
-.battle-actions {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    margin: 1.5rem 0;
-}
-
-.battle-btn {
-    display: block;
-    padding: 10px 15px;
-    background: #ff9a9e;
+.btn, .btn-small {
+    display: inline-block;
+    padding: 12px 24px;
+    margin: 5px;
+    background: #4CAF50;
     color: white;
     text-decoration: none;
-    margin: 0.5rem 0;
-    border-radius: 8px;
-    text-align: center;
+    border-radius: 5px;
+    transition: background 0.3s;
 }
 
-.battle-btn:hover {
-    background: #ff7e81;
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9em;
+}
+
+.btn:hover, .btn-small:hover {
+    background: #45a049;
 }
 
 .battle-container {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    gap: 2rem;
-    margin: 2rem 0;
-}
-
-.pokemon-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 15px;
-    text-align: center;
-    flex: 1;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    gap: 30px;
+    margin: 30px 0;
 }
 
 .vs {
-    font-size: 3rem;
+    font-size: 3em;
     font-weight: bold;
     color: #ff6b6b;
 }
 
-.result {
-    background: #fff8dc;
-    padding: 1.5rem;
-    border-left: 5px solid #ffd700;
-    margin: 2rem 0;
-}
-
 .pokemons-table {
     width: 100%;
-    background: white;
     border-collapse: collapse;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.pokemons-table thead {
-    background: #ff6b6b;
-    color: white;
+    margin: 20px 0;
 }
 
 .pokemons-table th,
 .pokemons-table td {
-    padding: 12px 15px;
+    border: 1px solid #ddd;
+    padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
 }
 
-.pokemons-table tbody tr:hover {
-    background-color: #f8f9fa;
-}
-
-.battle-btn-small {
-    display: inline-block;
-    padding: 8px 12px;
-    background: #4ecdc4;
+.pokemons-table th {
+    background-color: #4CAF50;
     color: white;
-    text-decoration: none;
-    border-radius: 6px;
-    font-size: 0.9rem;
 }
 
-.battle-btn-small:hover {
-    background: #4cb0a8;
+.error-page {
+    text-align: center;
+    padding: 50px;
 }
 
-.result pre {
-    white-space: pre-wrap;
-    word-break: break-word;
-    font-family: 'Courier New', monospace;
-    background: #f8f9fa;
-    padding: 1rem;
-    border-radius: 8px;
-    border-left: 4px solid #4ecdc4;
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.pokemon-preview {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.pokemon-thumb {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+/* Анимации */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+/* Стили для сообщений */
+.flash-error {
+    background: #f44336;
+}
+
+.flash-success {
+    background: #4CAF50;
+}
+
+.flash-warning {
+    background: #ff9800;
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
     .battle-container {
         flex-direction: column;
-        gap: 2rem;
+        gap: 10px;
     }
-    
+
     .pokemons-table {
-        font-size: 0.9rem;
+        font-size: 0.9em;
     }
-    
-    .actions {
-        flex-direction: column;
-    }
-    
-    .btn {
-        width: 100%;
-        text-align: center;
+
+    .hero h1 {
+        font-size: 2em;
     }
 }
 
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+.hero {
+    text-align: center;
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba1 100%);
+    color: white;
+    margin-bottom: 30px;
 }
 
-.fade-in {
-    animation: fadeIn 0.5s ease-out;
+.hero h1 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.btn-large {
+    padding: 15px 35px;
+    font-size: 1.2em;
+}
+
+.btn-secondary {
+    background: #ff9800;
+}
+
+.btn-secondary:hover {
+    background: #e68900;
 }
